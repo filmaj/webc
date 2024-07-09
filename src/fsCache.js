@@ -36,10 +36,6 @@ class FileSystemCache {
 
 		filePath = FileSystemCache.getRelativeFilePath(filePath, relativeTo);
 
-		if(!this.isFileInProjectDirectory(filePath)) {
-			throw new Error(`Invalid path ${filePath} is not in the working directory.`);
-		}
-
 		if(!this.contents[filePath]) {
 			this.contents[filePath] = fs.readFileSync(filePath, {
 				encoding: "utf8"

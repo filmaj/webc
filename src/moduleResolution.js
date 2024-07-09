@@ -11,6 +11,17 @@ class ModuleResolution {
 		startsWithAlias: /^([^\:]+)\:/i
 	};
 
+	static findNodeModulesRoot = (currentDir = __dirname.split(path.sep)) => {
+		if (!currentDir.length) {
+			throw Error('Could not find project root.')
+		}
+		const nodeModulesPath = currentDir.concat(['node_modules']).join(path.sep)
+		if (fs.existsSync(nodeModulesPath) && !currentDir.includes('node_modules')) {
+			return currentDir.join(path.sep)
+		}
+		return this.findNodeModulesRoot(currentDir.slice(0, -1))
+	}
+
 	setAliases(aliases = {}) {
 		// TODO project root alias?
 		this.aliases = Object.assign({
